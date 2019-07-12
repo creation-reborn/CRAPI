@@ -1,0 +1,6 @@
+name: ${name}
+main: net.creationreborn.plugin.bungee.BungeePlugin
+version: ${version}
+description: CreationReborn API.
+author: LX_Gaming
+website: https://creationreborn.net/

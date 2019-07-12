@@ -1,0 +1,108 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "4.0.4"
+    id "java"
+    id "signing"
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = "net.creationreborn"
+archivesBaseName = "crapi-plugin"
+version = version
+
+configurations {
+    provided {
+        compile.extendsFrom(provided)
+    }
+
+    compileJava.dependsOn(":common:build")
+    jar.enabled = false
+    jar.dependsOn("shadowJar")
+}
+
+repositories {
+    jcenter()
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+    maven {
+        name = "spongepowered"
+        url = "https://repo.spongepowered.org/maven"
+    }
+    maven {
+        name = "velocity"
+        url = "https://repo.velocitypowered.com/snapshots"
+    }
+}
+
+dependencies {
+    shadow(project(":common")) {
+        exclude(module: "gson")
+    }
+    annotationProcessor("com.velocitypowered:velocity-api:1.0.0-SNAPSHOT")
+    provided("com.velocitypowered:velocity-api:1.0.0-SNAPSHOT")
+    provided("net.md-5:bungeecord-api:1.14-SNAPSHOT")
+    annotationProcessor("org.spongepowered:spongeapi:7.1.0-SNAPSHOT")
+    provided("org.spongepowered:spongeapi:7.1.0-SNAPSHOT")
+}
+
+jar {
+    from {
+        (configurations.compile - configurations.provided).findAll({
+            it.isDirectory() || it.name.endsWith(".jar")
+        }).collect({
+            it.isDirectory() ? it : zipTree(it)
+        })
+    }
+}
+
+processResources {
+    from("LICENSE")
+    rename("LICENSE", "LICENSE-" + archivesBaseName)
+
+    from (sourceSets.main.resources.srcDirs) {
+        include("bungee.yml")
+        expand("name": "CRAPI", "version": version)
+    }
+}
+
+shadowJar {
+    classifier = null
+    configurations = [project.configurations.shadow]
+    relocate("okhttp3", "net.creationreborn.plugin.lib.okhttp3")
+    relocate("okio", "net.creationreborn.plugin.lib.okio")
+}
+
+task signJar {
+    doFirst {
+        if (!project.hasProperty("signing.keyStorePath") || !project.hasProperty("signing.secretKeyRingFile")) {
+            project.logger.warn("========== [WARNING] ==========")
+            project.logger.warn("")
+            project.logger.warn("   This build is not signed!   ")
+            project.logger.warn("")
+            project.logger.warn("========== [WARNING] ==========")
+            throw new StopExecutionException()
+        }
+    }
+
+    doLast {
+        configurations.archives.allArtifacts.files.each {
+            ant.signjar(
+                jar: it,
+                alias: project.property("signing.alias"),
+                storepass: project.property("signing.keyStorePassword"),
+                keystore: project.property("signing.keyStorePath"),
+                keypass: project.property("signing.keyStorePassword"),
+                preservelastmodified: project.property("signing.preserveLastModified"),
+                tsaurl: project.property("signing.timestampAuthority"),
+                digestalg: project.property("signing.digestAlgorithm")
+            )
+            project.logger.lifecycle("JAR Signed: " + it.name)
+
+            signing.sign(it)
+            project.logger.lifecycle("PGP Signed: " + it.name)
+        }
+    }
+}
