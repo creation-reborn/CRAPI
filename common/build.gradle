@@ -52,6 +52,7 @@ bintray {
     pkg {
         repo = "maven"
         name = "CRAPI"
+        userOrg = "creation-reborn"
         licenses = ["Apache-2.0"]
         vcsUrl = "https://github.com/creation-reborn/CRAPI.git"
         publish = true
