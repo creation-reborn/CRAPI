@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package net.creationreborn.common;
+package net.creationreborn.api.common;
 
 import net.creationreborn.api.CRAPI;
+import net.creationreborn.api.common.endpoint.DirectEndpoint;
+import net.creationreborn.api.common.endpoint.ForumEndpoint;
+import net.creationreborn.api.common.endpoint.LauncherEndpoint;
+import net.creationreborn.api.common.endpoint.TicketEndpoint;
+import net.creationreborn.api.common.endpoint.UserEndpoint;
+import net.creationreborn.api.common.util.LoggerImpl;
 import net.creationreborn.api.endpoint.Direct;
 import net.creationreborn.api.endpoint.Forum;
 import net.creationreborn.api.endpoint.Launcher;
 import net.creationreborn.api.endpoint.Ticket;
 import net.creationreborn.api.endpoint.User;
-import net.creationreborn.common.endpoint.DirectEndpoint;
-import net.creationreborn.common.endpoint.ForumEndpoint;
-import net.creationreborn.common.endpoint.LauncherEndpoint;
-import net.creationreborn.common.endpoint.TicketEndpoint;
-import net.creationreborn.common.endpoint.UserEndpoint;
-import net.creationreborn.common.util.LoggerImpl;
 
 public class CRAPIImpl extends CRAPI {
     

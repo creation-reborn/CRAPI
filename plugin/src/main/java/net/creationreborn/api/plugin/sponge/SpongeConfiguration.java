@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package net.creationreborn.plugin.sponge;
+package net.creationreborn.api.plugin.sponge;
 
 import net.creationreborn.api.CRAPI;
-import net.creationreborn.plugin.configuration.Config;
-import net.creationreborn.plugin.configuration.Configuration;
+import net.creationreborn.api.plugin.configuration.Config;
+import net.creationreborn.api.plugin.configuration.Configuration;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;

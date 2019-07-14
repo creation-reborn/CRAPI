@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package net.creationreborn.plugin.bungee;
+package net.creationreborn.api.plugin.bungee;
 
 import net.creationreborn.api.CRAPI;
+import net.creationreborn.api.common.CRAPIImpl;
+import net.creationreborn.api.plugin.configuration.Config;
+import net.creationreborn.api.plugin.configuration.Configuration;
 import net.creationreborn.api.util.Logger;
 import net.creationreborn.api.util.Reference;
-import net.creationreborn.common.CRAPIImpl;
-import net.creationreborn.plugin.configuration.Config;
-import net.creationreborn.plugin.configuration.Configuration;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.Optional;

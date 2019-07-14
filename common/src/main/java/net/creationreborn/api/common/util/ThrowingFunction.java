@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.creationreborn.common.util;
+package net.creationreborn.api.common.util;
 
 import java.util.function.Function;
 

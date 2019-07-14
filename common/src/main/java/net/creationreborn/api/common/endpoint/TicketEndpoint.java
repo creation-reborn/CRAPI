@@ -14,30 +14,47 @@
  * limitations under the License.
  */
 
-package net.creationreborn.common.endpoint;
+package net.creationreborn.api.common.endpoint;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.creationreborn.api.data.ServerData;
-import net.creationreborn.api.endpoint.Direct;
+import net.creationreborn.api.common.CRAPIImpl;
+import net.creationreborn.api.common.util.Toolbox;
+import net.creationreborn.api.endpoint.Ticket;
 import net.creationreborn.api.util.RestAction;
-import net.creationreborn.common.CRAPIImpl;
-import net.creationreborn.common.util.Toolbox;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-public class DirectEndpoint implements Direct {
+public class TicketEndpoint implements Ticket {
     
     @Override
-    public RestAction<Collection<ServerData>> getServers() {
+    public RestAction<JsonObject> getOpenTickets() {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
-                .addPathSegments("direct/getservers.php")
+                .addPathSegments("ticket/getopentickets.php")
+                .build();
+        
+        Request request = Toolbox.newRequestBuilder()
+                .url(httpUrl)
+                .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
+                .get().build();
+        
+        return Toolbox.newRestAction(request, response -> {
+            if (response.code() == 204) {
+                return null;
+            }
+            
+            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
+            return Toolbox.parseJson(jsonElement, JsonObject.class)
+                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        });
+    }
+    
+    @Override
+    public RestAction<JsonObject> getTicket(int ticketId) {
+        HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
+                .addPathSegments("ticket/getticket.php")
+                .addQueryParameter("ticket_id", String.valueOf(ticketId))
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
@@ -48,8 +65,6 @@ public class DirectEndpoint implements Direct {
         return Toolbox.newRestAction(request, response -> {
             JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
             return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("servers"), ServerData[].class))
-                    .map(values -> Stream.of(values).collect(Collectors.toCollection(ArrayList::new)))
                     .orElseThrow(() -> new JsonParseException("Failed to parse response"));
         });
     }

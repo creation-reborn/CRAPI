@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package net.creationreborn.plugin.velocity;
+package net.creationreborn.api.plugin.sponge;
 
 import com.google.inject.Inject;
-import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
-import com.velocitypowered.api.plugin.Plugin;
-import com.velocitypowered.api.plugin.annotation.DataDirectory;
-import com.velocitypowered.api.proxy.ProxyServer;
 import net.creationreborn.api.CRAPI;
+import net.creationreborn.api.common.CRAPIImpl;
+import net.creationreborn.api.plugin.configuration.Config;
+import net.creationreborn.api.plugin.configuration.Configuration;
 import net.creationreborn.api.util.Logger;
 import net.creationreborn.api.util.Reference;
-import net.creationreborn.common.CRAPIImpl;
-import net.creationreborn.plugin.configuration.Config;
-import net.creationreborn.plugin.configuration.Configuration;
 import org.slf4j.LoggerFactory;
+import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.game.state.GameConstructionEvent;
+import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
+import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.plugin.PluginContainer;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -38,26 +39,30 @@ import java.util.Optional;
         name = Reference.NAME,
         version = Reference.VERSION,
         description = Reference.DESCRIPTION,
-        url = Reference.WEBSITE,
-        authors = {Reference.AUTHORS}
+        authors = {Reference.AUTHORS},
+        url = Reference.WEBSITE
 )
-public class VelocityPlugin {
+public class SpongePlugin {
     
-    private static VelocityPlugin instance;
-    
-    @Inject
-    private ProxyServer proxy;
+    private static SpongePlugin instance;
     
     @Inject
-    @DataDirectory
+    private PluginContainer pluginContainer;
+    
+    @Inject
+    @DefaultConfig(sharedRoot = true)
     private Path path;
     
     private Configuration configuration;
     
-    @Subscribe
-    public void onProxyInitialize(ProxyInitializeEvent event) {
+    @Listener
+    public void onGameConstruction(GameConstructionEvent event) {
         instance = this;
-        configuration = new VelocityConfiguration(getPath());
+        configuration = new SpongeConfiguration(getPath());
+    }
+    
+    @Listener
+    public void onGamePreInitialization(GamePreInitializationEvent event) {
         getConfiguration().loadConfiguration();
         
         CRAPIImpl.init(getConfig().map(Config::getSecret).orElse(null));
@@ -75,12 +80,12 @@ public class VelocityPlugin {
         CRAPI.getInstance().getLogger().info("{} v{} has started.", Reference.NAME, Reference.VERSION);
     }
     
-    public static VelocityPlugin getInstance() {
+    public static SpongePlugin getInstance() {
         return instance;
     }
     
-    public ProxyServer getProxy() {
-        return proxy;
+    public PluginContainer getPluginContainer() {
+        return pluginContainer;
     }
     
     public Path getPath() {

@@ -14,52 +14,27 @@
  * limitations under the License.
  */
 
-package net.creationreborn.common.endpoint;
+package net.creationreborn.api.common.endpoint;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.creationreborn.api.endpoint.Ticket;
+import net.creationreborn.api.common.util.Toolbox;
+import net.creationreborn.api.endpoint.Launcher;
 import net.creationreborn.api.util.RestAction;
-import net.creationreborn.common.CRAPIImpl;
-import net.creationreborn.common.util.Toolbox;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
-public class TicketEndpoint implements Ticket {
+public class LauncherEndpoint implements Launcher {
     
     @Override
-    public RestAction<JsonObject> getOpenTickets() {
+    public RestAction<JsonObject> getPackages() {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
-                .addPathSegments("ticket/getopentickets.php")
+                .addPathSegments("launcher/getpackages.php")
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
                 .url(httpUrl)
-                .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
-        
-        return Toolbox.newRestAction(request, response -> {
-            if (response.code() == 204) {
-                return null;
-            }
-            
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
-        });
-    }
-    
-    @Override
-    public RestAction<JsonObject> getTicket(int ticketId) {
-        HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
-                .addPathSegments("ticket/getticket.php")
-                .addQueryParameter("ticket_id", String.valueOf(ticketId))
-                .build();
-        
-        Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
-                .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
                 .get().build();
         
         return Toolbox.newRestAction(request, response -> {

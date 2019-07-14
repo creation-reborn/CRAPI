@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package net.creationreborn.common.endpoint;
+package net.creationreborn.api.common.endpoint;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.creationreborn.api.common.CRAPIImpl;
+import net.creationreborn.api.common.util.Toolbox;
 import net.creationreborn.api.data.DonationData;
 import net.creationreborn.api.data.IdentityData;
 import net.creationreborn.api.data.PostData;
 import net.creationreborn.api.endpoint.Forum;
 import net.creationreborn.api.util.RestAction;
-import net.creationreborn.common.CRAPIImpl;
-import net.creationreborn.common.util.Toolbox;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Request;

@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package net.creationreborn.plugin.configuration;
+package net.creationreborn.api.plugin.configuration;
 
-public interface Configuration {
+public class Config {
     
-    boolean loadConfiguration();
+    private boolean debug = false;
+    private String secret = "";
     
-    boolean saveConfiguration();
+    public boolean isDebug() {
+        return debug;
+    }
     
-    Config getConfig();
+    public String getSecret() {
+        return secret;
+    }
 }

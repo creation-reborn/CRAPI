@@ -1,5 +1,5 @@
 name: ${name}
-main: net.creationreborn.plugin.bungee.BungeePlugin
+main: net.creationreborn.api.plugin.bungee.BungeePlugin
 version: ${version}
 description: CreationReborn API.
 author: LX_Gaming

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package net.creationreborn.plugin.velocity;
+package net.creationreborn.api.plugin.velocity;
 
 import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
 import net.creationreborn.api.CRAPI;
-import net.creationreborn.common.util.Toolbox;
-import net.creationreborn.plugin.configuration.Config;
-import net.creationreborn.plugin.configuration.Configuration;
+import net.creationreborn.api.common.util.Toolbox;
+import net.creationreborn.api.plugin.configuration.Config;
+import net.creationreborn.api.plugin.configuration.Configuration;
 
 import java.io.Reader;
 import java.io.Writer;
