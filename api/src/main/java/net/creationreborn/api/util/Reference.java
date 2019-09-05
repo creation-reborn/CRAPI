@@ -20,7 +20,7 @@ public class Reference {
     
     public static final String ID = "crapi";
     public static final String NAME = "CreationReborn API";
-    public static final String VERSION = "2.1.0";
+    public static final String VERSION = "2.1.1";
     public static final String DESCRIPTION = "Creation Reborn API";
     public static final String AUTHORS = "LX_Gaming";
     public static final String SOURCE = "https://github.com/creation-reborn/CRAPI";
