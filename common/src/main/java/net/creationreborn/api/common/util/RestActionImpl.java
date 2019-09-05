@@ -54,7 +54,9 @@ public class RestActionImpl<T> implements RestAction<T> {
                 try {
                     checkResponse(response);
                     success.accept(function.applyThrows(response));
+                    response.close();
                 } catch (Exception ex) {
+                    response.close();
                     failure.accept(ex);
                 }
             }
@@ -63,9 +65,10 @@ public class RestActionImpl<T> implements RestAction<T> {
     
     @Override
     public T sync() throws Exception {
-        Response response = getOkHttpClient().newCall(request).execute();
-        checkResponse(response);
-        return function.applyThrows(response);
+        try (Response response = getOkHttpClient().newCall(request).execute()) {
+            checkResponse(response);
+            return function.applyThrows(response);
+        }
     }
     
     private void checkResponse(Response response) throws APIException {
