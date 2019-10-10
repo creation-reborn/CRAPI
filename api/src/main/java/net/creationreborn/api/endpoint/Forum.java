@@ -55,5 +55,5 @@ public interface Forum {
     
     RestAction<Collection<String>> getUsersOfGroup(String group);
     
-    RestAction<Boolean> updateMinecraftUsername(UUID uniqueId, String username);
+    RestAction<Boolean> updateMinecraftUser(UUID uniqueId, String username);
 }

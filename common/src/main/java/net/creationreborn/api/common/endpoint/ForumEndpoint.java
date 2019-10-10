@@ -248,9 +248,9 @@ public class ForumEndpoint implements Forum {
     }
     
     @Override
-    public RestAction<Boolean> updateMinecraftUsername(UUID uniqueId, String username) {
+    public RestAction<Boolean> updateMinecraftUser(UUID uniqueId, String username) {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
-                .addPathSegments("forum/updateminecraftusername.php")
+                .addPathSegments("forum/updateminecraftuser.php")
                 .build();
         
         FormBody.Builder formBodyBuilder = new FormBody.Builder();
