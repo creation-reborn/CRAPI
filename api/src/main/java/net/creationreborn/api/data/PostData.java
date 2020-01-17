@@ -25,6 +25,9 @@ public class PostData implements Comparable<PostData> {
     @SerializedName("post_id")
     private int postId;
     
+    @SerializedName("thread_id")
+    private int threadId;
+    
     private String username;
     
     @SerializedName("post_date")
@@ -43,6 +46,10 @@ public class PostData implements Comparable<PostData> {
     
     public int getPostId() {
         return postId;
+    }
+    
+    public int getThreadId() {
+        return threadId;
     }
     
     public String getUsername() {
