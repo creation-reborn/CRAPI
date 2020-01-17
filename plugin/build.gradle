@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "4.0.4"
+    id "com.github.johnrengelman.shadow" version "5.2.0"
     id "java"
     id "signing"
 }
@@ -59,9 +59,6 @@ jar {
 }
 
 processResources {
-    from("LICENSE")
-    rename("LICENSE", "LICENSE-" + archivesBaseName)
-
     from (sourceSets.main.resources.srcDirs) {
         include("bungee.yml")
         expand("name": "CRAPI", "version": version)
@@ -69,7 +66,7 @@ processResources {
 }
 
 shadowJar {
-    classifier = null
+    archiveClassifier.set(null)
     configurations = [project.configurations.shadow]
     relocate("kotlin", "net.creationreborn.api.plugin.lib.kotlin")
     relocate("okhttp3", "net.creationreborn.api.plugin.lib.okhttp3")
