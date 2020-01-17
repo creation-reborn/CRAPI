@@ -20,7 +20,6 @@ import net.creationreborn.api.CRAPI;
 import net.creationreborn.api.common.CRAPIImpl;
 import net.creationreborn.api.plugin.configuration.Config;
 import net.creationreborn.api.plugin.configuration.Configuration;
-import net.creationreborn.api.util.Logger;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.Optional;
@@ -37,15 +36,6 @@ public class BungeePlugin extends Plugin {
         getConfiguration().loadConfiguration();
         
         CRAPIImpl.init(getConfig().map(Config::getSecret).orElse(null));
-        CRAPI.getInstance().getLogger()
-                .add(Logger.Level.INFO, getLogger()::info)
-                .add(Logger.Level.WARN, getLogger()::warning)
-                .add(Logger.Level.ERROR, getLogger()::severe)
-                .add(Logger.Level.DEBUG, message -> {
-                    if (getConfig().map(Config::isDebug).orElse(false)) {
-                        getLogger().info(message);
-                    }
-                });
         
         getConfiguration().saveConfiguration();
         CRAPI.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);

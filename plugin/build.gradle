@@ -44,6 +44,7 @@ dependencies {
     annotationProcessor("com.velocitypowered:velocity-api:1.0.0-SNAPSHOT")
     provided("com.velocitypowered:velocity-api:1.0.0-SNAPSHOT")
     provided("net.md-5:bungeecord-api:1.14-SNAPSHOT")
+    compile("org.apache.logging.log4j:log4j-slf4j-impl:2.13.0")
     annotationProcessor("org.spongepowered:spongeapi:7.1.0-SNAPSHOT")
     provided("org.spongepowered:spongeapi:7.1.0-SNAPSHOT")
 }

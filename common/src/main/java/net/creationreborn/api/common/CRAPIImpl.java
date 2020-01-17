@@ -22,12 +22,12 @@ import net.creationreborn.api.common.endpoint.ForumEndpoint;
 import net.creationreborn.api.common.endpoint.LauncherEndpoint;
 import net.creationreborn.api.common.endpoint.TicketEndpoint;
 import net.creationreborn.api.common.endpoint.UserEndpoint;
-import net.creationreborn.api.common.util.LoggerImpl;
 import net.creationreborn.api.endpoint.Direct;
 import net.creationreborn.api.endpoint.Forum;
 import net.creationreborn.api.endpoint.Launcher;
 import net.creationreborn.api.endpoint.Ticket;
 import net.creationreborn.api.endpoint.User;
+import org.slf4j.LoggerFactory;
 
 public class CRAPIImpl extends CRAPI {
     
@@ -40,7 +40,7 @@ public class CRAPIImpl extends CRAPI {
     
     private CRAPIImpl(String secret) {
         this.secret = secret;
-        this.logger = new LoggerImpl();
+        this.logger = LoggerFactory.getLogger(CRAPI.ID);
     }
     
     public static boolean init(String secret) {

@@ -21,7 +21,7 @@ import net.creationreborn.api.endpoint.Forum;
 import net.creationreborn.api.endpoint.Launcher;
 import net.creationreborn.api.endpoint.Ticket;
 import net.creationreborn.api.endpoint.User;
-import net.creationreborn.api.util.Logger;
+import org.slf4j.Logger;
 
 public abstract class CRAPI {
     

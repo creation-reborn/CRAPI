@@ -26,8 +26,6 @@ import net.creationreborn.api.CRAPI;
 import net.creationreborn.api.common.CRAPIImpl;
 import net.creationreborn.api.plugin.configuration.Config;
 import net.creationreborn.api.plugin.configuration.Configuration;
-import net.creationreborn.api.util.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -60,15 +58,6 @@ public class VelocityPlugin {
         getConfiguration().loadConfiguration();
         
         CRAPIImpl.init(getConfig().map(Config::getSecret).orElse(null));
-        CRAPI.getInstance().getLogger()
-                .add(Logger.Level.INFO, LoggerFactory.getLogger(Reference.NAME)::info)
-                .add(Logger.Level.WARN, LoggerFactory.getLogger(Reference.NAME)::warn)
-                .add(Logger.Level.ERROR, LoggerFactory.getLogger(Reference.NAME)::error)
-                .add(Logger.Level.DEBUG, message -> {
-                    if (getConfig().map(Config::isDebug).orElse(false)) {
-                        LoggerFactory.getLogger(Reference.NAME).info(message);
-                    }
-                });
         
         getConfiguration().saveConfiguration();
         CRAPI.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);
