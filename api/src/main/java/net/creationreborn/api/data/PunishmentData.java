@@ -25,6 +25,7 @@ public class PunishmentData {
     @SerializedName("unique_id")
     private UUID uniqueId;
     
+    @SerializedName("name")
     private String name;
     
     @SerializedName("last_login")

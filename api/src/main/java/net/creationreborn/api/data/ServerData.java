@@ -22,12 +22,16 @@ import java.util.Collection;
 
 public class ServerData {
     
+    @SerializedName("name")
     private String name;
     
     @SerializedName("direct_connects")
     private Collection<String> directConnects;
     
+    @SerializedName("lobby")
     private boolean lobby;
+    
+    @SerializedName("restricted")
     private boolean restricted;
     
     public String getName() {

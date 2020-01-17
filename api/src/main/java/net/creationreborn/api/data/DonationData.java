@@ -16,12 +16,23 @@
 
 package net.creationreborn.api.data;
 
+import com.google.gson.annotations.SerializedName;
+
 public class DonationData {
     
+    @SerializedName("item")
     private String item;
+    
+    @SerializedName("id")
     private int id;
+    
+    @SerializedName("username")
     private String username;
+    
+    @SerializedName("amount")
     private float amount;
+    
+    @SerializedName("timestamp")
     private long timestamp;
     
     public String getItem() {

@@ -28,11 +28,13 @@ public class PostData implements Comparable<PostData> {
     @SerializedName("thread_id")
     private int threadId;
     
+    @SerializedName("username")
     private String username;
     
     @SerializedName("post_date")
     private long postDate;
     
+    @SerializedName("message")
     private String message;
     
     @SerializedName("message_state")
@@ -41,7 +43,10 @@ public class PostData implements Comparable<PostData> {
     @SerializedName("last_edit_date")
     private long lastEditDate;
     
+    @SerializedName("title")
     private String title;
+    
+    @SerializedName("initial")
     private boolean initial;
     
     public int getPostId() {
