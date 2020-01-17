@@ -17,6 +17,8 @@ configurations {
     provided {
         compile.extendsFrom(provided)
     }
+
+    compileJava.dependsOn("filterJava")
 }
 
 repositories {
@@ -68,6 +70,12 @@ bintrayUpload {
     onlyIf { System.getenv("TRAVIS_PULL_REQUEST") == "false" }
 }
 
+compileJava {
+    doFirst {
+        source = filterJava.outputs
+    }
+}
+
 jar {
     from {
         (configurations.compile - configurations.provided).findAll({
@@ -100,5 +108,9 @@ publishing {
     }
 }
 
+task filterJava(type: Sync) {
+    from(sourceSets.main.java)
+    into("$buildDir/tmp/$name")
 
+    expand(version: version)
 }

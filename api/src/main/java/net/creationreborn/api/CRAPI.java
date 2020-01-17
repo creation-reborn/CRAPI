@@ -25,6 +25,14 @@ import net.creationreborn.api.util.Logger;
 
 public abstract class CRAPI {
     
+    public static final String ID = "crapi";
+    public static final String NAME = "CreationReborn API";
+    public static final String VERSION = "${version}";
+    public static final String DESCRIPTION = "Creation Reborn API";
+    public static final String AUTHORS = "LX_Gaming";
+    public static final String SOURCE = "https://github.com/creation-reborn/CRAPI";
+    public static final String WEBSITE = "https://creationreborn.net/";
+    
     private static CRAPI instance;
     protected Logger logger;
     

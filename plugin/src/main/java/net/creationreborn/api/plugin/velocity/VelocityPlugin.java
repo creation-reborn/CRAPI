@@ -27,19 +27,18 @@ import net.creationreborn.api.common.CRAPIImpl;
 import net.creationreborn.api.plugin.configuration.Config;
 import net.creationreborn.api.plugin.configuration.Configuration;
 import net.creationreborn.api.util.Logger;
-import net.creationreborn.api.util.Reference;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.Optional;
 
 @Plugin(
-        id = Reference.ID,
-        name = Reference.NAME,
-        version = Reference.VERSION,
-        description = Reference.DESCRIPTION,
-        url = Reference.WEBSITE,
-        authors = {Reference.AUTHORS}
+        id = CRAPI.ID,
+        name = CRAPI.NAME,
+        version = CRAPI.VERSION,
+        description = CRAPI.DESCRIPTION,
+        url = CRAPI.WEBSITE,
+        authors = {CRAPI.AUTHORS}
 )
 public class VelocityPlugin {
     
@@ -72,7 +71,7 @@ public class VelocityPlugin {
                 });
         
         getConfiguration().saveConfiguration();
-        CRAPI.getInstance().getLogger().info("{} v{} has started.", Reference.NAME, Reference.VERSION);
+        CRAPI.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);
     }
     
     public static VelocityPlugin getInstance() {

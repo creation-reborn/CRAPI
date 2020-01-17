@@ -21,7 +21,6 @@ import net.creationreborn.api.common.CRAPIImpl;
 import net.creationreborn.api.plugin.configuration.Config;
 import net.creationreborn.api.plugin.configuration.Configuration;
 import net.creationreborn.api.util.Logger;
-import net.creationreborn.api.util.Reference;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.Optional;
@@ -49,12 +48,12 @@ public class BungeePlugin extends Plugin {
                 });
         
         getConfiguration().saveConfiguration();
-        CRAPI.getInstance().getLogger().info("{} v{} has started.", Reference.NAME, Reference.VERSION);
+        CRAPI.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);
     }
     
     @Override
     public void onDisable() {
-        CRAPI.getInstance().getLogger().info("{} v{} unloaded", Reference.NAME, Reference.VERSION);
+        CRAPI.getInstance().getLogger().info("{} v{} unloaded", CRAPI.NAME, CRAPI.VERSION);
     }
     
     public static BungeePlugin getInstance() {

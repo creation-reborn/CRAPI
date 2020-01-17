@@ -22,7 +22,6 @@ import net.creationreborn.api.common.CRAPIImpl;
 import net.creationreborn.api.plugin.configuration.Config;
 import net.creationreborn.api.plugin.configuration.Configuration;
 import net.creationreborn.api.util.Logger;
-import net.creationreborn.api.util.Reference;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
@@ -35,12 +34,12 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 @Plugin(
-        id = Reference.ID,
-        name = Reference.NAME,
-        version = Reference.VERSION,
-        description = Reference.DESCRIPTION,
-        authors = {Reference.AUTHORS},
-        url = Reference.WEBSITE
+        id = CRAPI.ID,
+        name = CRAPI.NAME,
+        version = CRAPI.VERSION,
+        description = CRAPI.DESCRIPTION,
+        authors = {CRAPI.AUTHORS},
+        url = CRAPI.WEBSITE
 )
 public class SpongePlugin {
     
@@ -77,7 +76,7 @@ public class SpongePlugin {
                 });
         
         getConfiguration().saveConfiguration();
-        CRAPI.getInstance().getLogger().info("{} v{} has started.", Reference.NAME, Reference.VERSION);
+        CRAPI.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);
     }
     
     public static SpongePlugin getInstance() {

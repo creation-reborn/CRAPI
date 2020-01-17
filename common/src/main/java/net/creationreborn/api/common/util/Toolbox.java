@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import net.creationreborn.api.util.Reference;
+import net.creationreborn.api.CRAPI;
 import okhttp3.CacheControl;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -77,7 +77,7 @@ public class Toolbox {
     }
     
     public static Request.Builder newRequestBuilder() {
-        return new Request.Builder().cacheControl(CacheControl.FORCE_NETWORK).addHeader("User-Agent", Reference.NAME + "/" + Reference.VERSION);
+        return new Request.Builder().cacheControl(CacheControl.FORCE_NETWORK).addHeader("User-Agent", CRAPI.NAME + "/" + CRAPI.VERSION);
     }
     
     public static InputStream getInputStream(Response response) {
