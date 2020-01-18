@@ -52,6 +52,10 @@ public class UserEndpoint implements User {
                 .get().build();
         
         return Toolbox.newRestAction(request, response -> {
+            if (response.code() == 204) {
+                return null;
+            }
+            
             JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
             return Toolbox.parseJson(jsonElement, JsonObject.class)
                     .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("punishments"), PunishmentData[].class))
