@@ -19,11 +19,11 @@ package net.creationreborn.api.common.util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.creationreborn.api.common.CRAPIImpl;
 import net.creationreborn.api.util.APIException;
 import net.creationreborn.api.util.RestAction;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -32,7 +32,6 @@ import java.util.function.Consumer;
 
 public class RestActionImpl<T> implements RestAction<T> {
     
-    private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
     private final Request request;
     private final ThrowingFunction<Response, T> function;
     
@@ -43,7 +42,7 @@ public class RestActionImpl<T> implements RestAction<T> {
     
     @Override
     public void async(Consumer<T> success, Consumer<Throwable> failure) {
-        getOkHttpClient().newCall(request).enqueue(new Callback() {
+        CRAPIImpl.getInstance().getOkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException ex) {
                 failure.accept(ex);
@@ -65,7 +64,7 @@ public class RestActionImpl<T> implements RestAction<T> {
     
     @Override
     public T sync() throws Exception {
-        try (Response response = getOkHttpClient().newCall(request).execute()) {
+        try (Response response = CRAPIImpl.getInstance().getOkHttpClient().newCall(request).execute()) {
             checkResponse(response);
             return function.applyThrows(response);
         }
@@ -83,9 +82,5 @@ public class RestActionImpl<T> implements RestAction<T> {
         } catch (IOException | JsonParseException ex) {
             throw new APIException("Failed to read API response", ex);
         }
-    }
-    
-    public static OkHttpClient getOkHttpClient() {
-        return OK_HTTP_CLIENT;
     }
 }
