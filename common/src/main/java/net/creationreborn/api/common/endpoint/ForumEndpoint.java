@@ -33,6 +33,7 @@ import okhttp3.Request;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -126,7 +127,7 @@ public class ForumEndpoint implements Forum {
             JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
             return Toolbox.parseJson(jsonElement, JsonObject.class)
                     .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("posts"), PostData[].class))
-                    .map(values -> Stream.of(values).collect(Collectors.toCollection(HashSet::new)))
+                    .map(values -> Stream.of(values).collect(Collectors.toCollection(LinkedHashSet::new)))
                     .orElseThrow(() -> new JsonParseException("Failed to parse response"));
         });
     }

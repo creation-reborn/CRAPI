@@ -29,7 +29,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Request;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -59,7 +59,7 @@ public class UserEndpoint implements User {
             JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
             return Toolbox.parseJson(jsonElement, JsonObject.class)
                     .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("punishments"), PunishmentData[].class))
-                    .map(values -> Stream.of(values).collect(Collectors.toCollection(HashSet::new)))
+                    .map(values -> Stream.of(values).collect(Collectors.toCollection(LinkedHashSet::new)))
                     .orElseThrow(() -> new JsonParseException("Failed to parse response"));
         });
     }
