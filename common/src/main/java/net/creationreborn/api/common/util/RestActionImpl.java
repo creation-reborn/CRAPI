@@ -20,7 +20,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.creationreborn.api.common.CRAPIImpl;
-import net.creationreborn.api.util.APIException;
+import net.creationreborn.api.exception.APIException;
 import net.creationreborn.api.util.RestAction;
 import okhttp3.Call;
 import okhttp3.Callback;
