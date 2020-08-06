@@ -54,13 +54,21 @@ public class VelocityPlugin {
     @Subscribe
     public void onProxyInitialize(ProxyInitializeEvent event) {
         instance = this;
-        configuration = new VelocityConfiguration(getPath());
-        getConfiguration().loadConfiguration();
+        this.configuration = new Configuration(getPath());
         
-        CRAPIImpl.init(getConfig().map(Config::getSecret).orElse(null));
+        CRAPIImpl.init();
+        
+        if (!getConfiguration().loadConfiguration()) {
+            CRAPIImpl.getInstance().getLogger().error("Failed to load");
+            return;
+        }
+        
+        if (CRAPIImpl.getInstance().getSecret() == null) {
+            getConfig().map(Config::getSecret).ifPresent(CRAPIImpl.getInstance()::setSecret);
+        }
         
         getConfiguration().saveConfiguration();
-        CRAPI.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);
+        CRAPIImpl.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);
     }
     
     public static VelocityPlugin getInstance() {
@@ -80,10 +88,6 @@ public class VelocityPlugin {
     }
     
     public Optional<Config> getConfig() {
-        if (getConfiguration() != null) {
-            return Optional.ofNullable(getConfiguration().getConfig());
-        }
-        
-        return Optional.empty();
+        return Optional.ofNullable(getConfiguration().getConfig());
     }
 }

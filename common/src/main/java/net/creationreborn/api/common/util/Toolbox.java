@@ -127,11 +127,11 @@ public class Toolbox {
         }
     }
     
-    public static <T> Optional<T> newInstance(Class<? extends T> typeOfT) {
+    public static <T> T newInstance(Class<? extends T> type) {
         try {
-            return Optional.of(typeOfT.newInstance());
-        } catch (Exception ex) {
-            return Optional.empty();
+            return type.newInstance();
+        } catch (Throwable ex) {
+            return null;
         }
     }
     

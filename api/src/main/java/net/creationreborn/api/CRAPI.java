@@ -21,7 +21,6 @@ import net.creationreborn.api.endpoint.Forum;
 import net.creationreborn.api.endpoint.Launcher;
 import net.creationreborn.api.endpoint.Ticket;
 import net.creationreborn.api.endpoint.User;
-import org.slf4j.Logger;
 
 public abstract class CRAPI {
     
@@ -34,10 +33,17 @@ public abstract class CRAPI {
     public static final String WEBSITE = "https://creationreborn.net/";
     
     private static CRAPI instance;
-    protected Logger logger;
     
     protected CRAPI() {
-        instance = this;
+        CRAPI.instance = this;
+    }
+    
+    private static <T> T check(T instance) {
+        if (instance == null) {
+            throw new IllegalStateException(String.format("%s has not been initialized!", CRAPI.NAME));
+        }
+        
+        return instance;
     }
     
     public abstract Direct getDirectEndpoint();
@@ -50,11 +56,11 @@ public abstract class CRAPI {
     
     public abstract User getUserEndpoint();
     
-    public static CRAPI getInstance() {
-        return instance;
+    public static boolean isAvailable() {
+        return instance != null;
     }
     
-    public Logger getLogger() {
-        return logger;
+    public static CRAPI getInstance() {
+        return check(instance);
     }
 }

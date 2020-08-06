@@ -16,13 +16,22 @@
 
 package net.creationreborn.api.plugin.configuration;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Config {
     
+    @SerializedName("debug")
     private boolean debug = false;
+    
+    @SerializedName("secret")
     private String secret = "";
     
     public boolean isDebug() {
         return debug;
+    }
+    
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
     
     public String getSecret() {

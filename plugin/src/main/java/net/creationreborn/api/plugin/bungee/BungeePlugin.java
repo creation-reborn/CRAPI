@@ -32,18 +32,31 @@ public class BungeePlugin extends Plugin {
     @Override
     public void onEnable() {
         instance = this;
-        configuration = new BungeeConfiguration(getDataFolder().toPath());
-        getConfiguration().loadConfiguration();
         
-        CRAPIImpl.init(getConfig().map(Config::getSecret).orElse(null));
+        this.configuration = new Configuration(getDataFolder().toPath());
+        
+        CRAPIImpl.init();
+        
+        if (!getConfiguration().loadConfiguration()) {
+            CRAPIImpl.getInstance().getLogger().error("Failed to load");
+            return;
+        }
+        
+        if (CRAPIImpl.getInstance().getSecret() == null) {
+            getConfig().map(Config::getSecret).ifPresent(CRAPIImpl.getInstance()::setSecret);
+        }
         
         getConfiguration().saveConfiguration();
-        CRAPI.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);
+        CRAPIImpl.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);
     }
     
     @Override
     public void onDisable() {
-        CRAPI.getInstance().getLogger().info("{} v{} unloaded", CRAPI.NAME, CRAPI.VERSION);
+        if (!CRAPI.isAvailable()) {
+            return;
+        }
+        
+        CRAPIImpl.getInstance().getLogger().info("{} v{} unloaded", CRAPI.NAME, CRAPI.VERSION);
     }
     
     public static BungeePlugin getInstance() {
@@ -55,10 +68,6 @@ public class BungeePlugin extends Plugin {
     }
     
     public Optional<Config> getConfig() {
-        if (getConfiguration() != null) {
-            return Optional.ofNullable(getConfiguration().getConfig());
-        }
-        
-        return Optional.empty();
+        return Optional.ofNullable(getConfiguration().getConfig());
     }
 }

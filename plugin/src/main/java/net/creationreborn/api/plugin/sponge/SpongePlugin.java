@@ -55,17 +55,24 @@ public class SpongePlugin {
     @Listener
     public void onGameConstruction(GameConstructionEvent event) {
         instance = this;
-        configuration = new SpongeConfiguration(getPath());
+        this.configuration = new Configuration(getPath());
     }
     
     @Listener
     public void onGamePreInitialization(GamePreInitializationEvent event) {
-        getConfiguration().loadConfiguration();
+        CRAPIImpl.init();
         
-        CRAPIImpl.init(getConfig().map(Config::getSecret).orElse(null));
+        if (!getConfiguration().loadConfiguration()) {
+            CRAPIImpl.getInstance().getLogger().error("Failed to load");
+            return;
+        }
+        
+        if (CRAPIImpl.getInstance().getSecret() == null) {
+            getConfig().map(Config::getSecret).ifPresent(CRAPIImpl.getInstance()::setSecret);
+        }
         
         getConfiguration().saveConfiguration();
-        CRAPI.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);
+        CRAPIImpl.getInstance().getLogger().info("{} v{} has started.", CRAPI.NAME, CRAPI.VERSION);
     }
     
     public static SpongePlugin getInstance() {
@@ -85,10 +92,6 @@ public class SpongePlugin {
     }
     
     public Optional<Config> getConfig() {
-        if (getConfiguration() != null) {
-            return Optional.ofNullable(getConfiguration().getConfig());
-        }
-        
-        return Optional.empty();
+        return Optional.ofNullable(getConfiguration().getConfig());
     }
 }

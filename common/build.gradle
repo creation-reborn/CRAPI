@@ -23,6 +23,7 @@ repositories {
 dependencies {
     api(project(path: ":api"))
     api("com.squareup.okhttp3:okhttp:4.8.0")
+    api("org.slf4j:slf4j-api:1.7.30")
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {

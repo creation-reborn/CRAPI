@@ -28,6 +28,7 @@ import net.creationreborn.api.endpoint.Launcher;
 import net.creationreborn.api.endpoint.Ticket;
 import net.creationreborn.api.endpoint.User;
 import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CRAPIImpl extends CRAPI {
@@ -37,25 +38,25 @@ public class CRAPIImpl extends CRAPI {
     private static final Launcher LAUNCHER_ENDPOINT = new LauncherEndpoint();
     private static final Ticket TICKET_ENDPOINT = new TicketEndpoint();
     private static final User USER_ENDPOINT = new UserEndpoint();
+    private final Logger logger;
     private final OkHttpClient okHttpClient;
-    private final String secret;
+    private String secret;
     
-    private CRAPIImpl(OkHttpClient okHttpClient, String secret) {
+    private CRAPIImpl(OkHttpClient okHttpClient) {
         this.logger = LoggerFactory.getLogger(CRAPI.ID);
         this.okHttpClient = okHttpClient;
-        this.secret = secret;
     }
     
-    public static boolean init(String secret) {
-        return init(new OkHttpClient(), secret);
+    public static boolean init() {
+        return init(new OkHttpClient());
     }
     
-    public static boolean init(OkHttpClient okHttpClient, String secret) {
-        if (getInstance() != null) {
+    public static boolean init(OkHttpClient okHttpClient) {
+        if (isAvailable()) {
             return false;
         }
         
-        new CRAPIImpl(okHttpClient, secret);
+        new CRAPIImpl(okHttpClient);
         return true;
     }
     
@@ -88,11 +89,19 @@ public class CRAPIImpl extends CRAPI {
         return (CRAPIImpl) CRAPI.getInstance();
     }
     
+    public Logger getLogger() {
+        return logger;
+    }
+    
     public OkHttpClient getOkHttpClient() {
         return okHttpClient;
     }
     
     public String getSecret() {
         return secret;
+    }
+    
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }
