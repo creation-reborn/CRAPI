@@ -1,3 +1,5 @@
+rootProject.name = "CRAPI"
+
 include "api"
 include "common"
 include "plugin"

@@ -1,9 +1,8 @@
 plugins {
-    id "com.jfrog.bintray" version "1.8.4"
+    id "com.jfrog.bintray"
     id "java"
     id "java-library"
     id "maven-publish"
-    id "signing"
 }
 
 sourceCompatibility = 1.8
@@ -14,10 +13,6 @@ archivesBaseName = "crapi-common"
 version = version
 
 configurations {
-    provided {
-        compile.extendsFrom(provided)
-    }
-
     compileJava.dependsOn(":api:build")
 }
 
@@ -69,16 +64,6 @@ bintrayUpload {
     onlyIf { System.getenv("TRAVIS_BUILD_NUMBER") != null }
     onlyIf { System.getenv("TRAVIS_JOB_NUMBER") ==~ /\d+\.1$/ }
     onlyIf { System.getenv("TRAVIS_PULL_REQUEST") == "false" }
-}
-
-jar {
-    from {
-        (configurations.compile - configurations.provided).findAll({
-            it.isDirectory() || it.name.endsWith(".jar")
-        }).collect({
-            it.isDirectory() ? it : zipTree(it)
-        })
-    }
 }
 
 javadoc {
