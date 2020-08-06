@@ -16,10 +16,9 @@
 
 package net.creationreborn.api.common.endpoint;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import net.creationreborn.api.common.CRAPIImpl;
+import net.creationreborn.api.common.util.RestActionImpl;
 import net.creationreborn.api.common.util.Toolbox;
 import net.creationreborn.api.data.DonationData;
 import net.creationreborn.api.data.IdentityData;
@@ -29,15 +28,12 @@ import net.creationreborn.api.util.RestAction;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 
-import java.util.ArrayList;
+import java.io.Reader;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ForumEndpoint implements Forum {
     
@@ -48,20 +44,25 @@ public class ForumEndpoint implements Forum {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
+        return new RestActionImpl<>(request, response -> {
             if (response.code() == 204) {
                 return null;
             }
             
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("groups"), String[].class))
-                    .map(values -> Stream.of(values).collect(Collectors.toCollection(HashSet::new)))
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("groups"), String[].class));
+            }
         });
     }
     
@@ -73,16 +74,21 @@ public class ForumEndpoint implements Forum {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("donations"), DonationData[].class))
-                    .map(values -> Stream.of(values).collect(Collectors.toCollection(ArrayList::new)))
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("donations"), DonationData[].class));
+            }
         });
     }
     
@@ -94,20 +100,25 @@ public class ForumEndpoint implements Forum {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
+        return new RestActionImpl<>(request, response -> {
             if (response.code() == 204) {
                 return null;
             }
             
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("groups"), String[].class))
-                    .map(values -> Stream.of(values).collect(Collectors.toCollection(HashSet::new)))
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("groups"), String[].class));
+            }
         });
     }
     
@@ -119,16 +130,21 @@ public class ForumEndpoint implements Forum {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("posts"), PostData[].class))
-                    .map(values -> Stream.of(values).collect(Collectors.toCollection(LinkedHashSet::new)))
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("posts"), PostData[].class));
+            }
         });
     }
     
@@ -140,14 +156,20 @@ public class ForumEndpoint implements Forum {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, PostData.class)
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                return Toolbox.GSON.fromJson(reader, PostData.class);
+            }
         });
     }
     
@@ -159,14 +181,20 @@ public class ForumEndpoint implements Forum {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, IdentityData.class)
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                return Toolbox.GSON.fromJson(reader, IdentityData.class);
+            }
         });
     }
     
@@ -178,14 +206,20 @@ public class ForumEndpoint implements Forum {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, IdentityData.class)
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                return Toolbox.GSON.fromJson(reader, IdentityData.class);
+            }
         });
     }
     
@@ -197,14 +231,20 @@ public class ForumEndpoint implements Forum {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, IdentityData.class)
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                return Toolbox.GSON.fromJson(reader, IdentityData.class);
+            }
         });
     }
     
@@ -216,14 +256,20 @@ public class ForumEndpoint implements Forum {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, IdentityData.class)
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                return Toolbox.GSON.fromJson(reader, IdentityData.class);
+            }
         });
     }
     
@@ -235,16 +281,21 @@ public class ForumEndpoint implements Forum {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("users"), String[].class))
-                    .map(values -> Stream.of(values).collect(Collectors.toCollection(HashSet::new)))
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("users"), String[].class));
+            }
         });
     }
     
@@ -259,10 +310,11 @@ public class ForumEndpoint implements Forum {
         formBodyBuilder.add("username", username);
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .post(formBodyBuilder.build()).build();
+                .url(httpUrl)
+                .method("POST", formBodyBuilder.build())
+                .build();
         
-        return Toolbox.newRestAction(request, response -> response.code() == 200);
+        return new RestActionImpl<>(request, response -> response.code() == 200);
     }
 }

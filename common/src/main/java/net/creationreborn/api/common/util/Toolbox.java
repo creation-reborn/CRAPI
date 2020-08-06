@@ -19,104 +19,36 @@ package net.creationreborn.api.common.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import net.creationreborn.api.CRAPI;
 import okhttp3.CacheControl;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
-import okhttp3.Response;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Toolbox {
     
-    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
-    private static final int EOF = -1;
-    private static final Gson GSON = new GsonBuilder()
+    public static final Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
             .enableComplexMapKeySerialization()
             .setPrettyPrinting()
             .create();
     
-    public static boolean isBlank(CharSequence charSequence) {
-        int stringLength;
-        if (charSequence == null || (stringLength = charSequence.length()) == 0) {
-            return true;
-        }
-        
-        for (int index = 0; index < stringLength; index++) {
-            if (!Character.isWhitespace(charSequence.charAt(index))) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
-    public static boolean isNotBlank(CharSequence charSequence) {
-        return !isBlank(charSequence);
-    }
-    
-    public static <T> RestActionImpl<T> newRestAction(Request request, ThrowingFunction<Response, T> function) {
-        return new RestActionImpl<>(request, function);
-    }
-    
     public static HttpUrl.Builder newHttpUrlBuilder() {
-        return new HttpUrl.Builder().scheme("https").host("api.creationreborn.net").addPathSegments("v2");
+        return new HttpUrl.Builder()
+                .scheme("https")
+                .host("api.creationreborn.net")
+                .addPathSegments("v2");
     }
     
     public static Request.Builder newRequestBuilder() {
-        return new Request.Builder().cacheControl(CacheControl.FORCE_NETWORK).addHeader("User-Agent", CRAPI.NAME + "/" + CRAPI.VERSION);
-    }
-    
-    public static InputStream getInputStream(Response response) {
-        if (response.body() != null) {
-            return response.body().byteStream();
-        }
-        
-        return null;
-    }
-    
-    public static byte[] toByteArray(InputStream inputStream) throws IOException {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            int read;
-            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-            
-            while ((read = inputStream.read(buffer)) != EOF) {
-                outputStream.write(buffer, 0, read);
-            }
-            
-            return outputStream.toByteArray();
-        }
-    }
-    
-    public static JsonElement toJsonElement(InputStream inputStream) throws IOException, JsonParseException {
-        try (Reader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            return getGson().fromJson(reader, JsonElement.class);
-        }
-    }
-    
-    private static String toString(InputStream inputStream) throws IOException {
-        return new String(toByteArray(inputStream), StandardCharsets.UTF_8);
-    }
-    
-    public static <T> Optional<T> parseJson(String json, Class<T> type) {
-        try {
-            return Optional.of(getGson().fromJson(json, type));
-        } catch (RuntimeException ex) {
-            return Optional.empty();
-        }
+        return new Request.Builder()
+                .cacheControl(CacheControl.FORCE_NETWORK)
+                .addHeader("User-Agent", CRAPI.USER_AGENT);
     }
     
     public static <T> Optional<T> parseJson(JsonElement jsonElement, Class<T> type) {
@@ -135,16 +67,21 @@ public class Toolbox {
         }
     }
     
+    public static <E> ArrayList<E> newArrayList() {
+        return new ArrayList<>();
+    }
+    
     @SafeVarargs
     public static <E> ArrayList<E> newArrayList(E... elements) {
         return Stream.of(elements).collect(Collectors.toCollection(ArrayList::new));
     }
     
-    public static <K, V> HashMap<K, V> newHashMap() {
-        return new HashMap<>();
+    public static <E> HashSet<E> newHashSet() {
+        return new HashSet<>();
     }
     
-    public static Gson getGson() {
-        return GSON;
+    @SafeVarargs
+    public static <E> HashSet<E> newHashSet(E... elements) {
+        return Stream.of(elements).collect(Collectors.toCollection(HashSet::new));
     }
 }

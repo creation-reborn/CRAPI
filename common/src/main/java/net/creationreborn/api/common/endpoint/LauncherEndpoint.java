@@ -16,14 +16,16 @@
 
 package net.creationreborn.api.common.endpoint;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
+import net.creationreborn.api.common.util.RestActionImpl;
 import net.creationreborn.api.common.util.Toolbox;
 import net.creationreborn.api.endpoint.Launcher;
 import net.creationreborn.api.util.RestAction;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
+
+import java.io.Reader;
 
 public class LauncherEndpoint implements Launcher {
     
@@ -35,12 +37,18 @@ public class LauncherEndpoint implements Launcher {
         
         Request request = Toolbox.newRequestBuilder()
                 .url(httpUrl)
-                .get().build();
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                return Toolbox.GSON.fromJson(reader, JsonObject.class);
+            }
         });
     }
 }

@@ -31,6 +31,7 @@ public abstract class CRAPI {
     public static final String AUTHORS = "LX_Gaming";
     public static final String SOURCE = "https://github.com/creation-reborn/CRAPI";
     public static final String WEBSITE = "https://creationreborn.net/";
+    public static final String USER_AGENT = CRAPI.NAME + "/" + CRAPI.VERSION;
     
     private static CRAPI instance;
     

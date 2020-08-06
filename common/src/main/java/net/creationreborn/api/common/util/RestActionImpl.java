@@ -16,7 +16,6 @@
 
 package net.creationreborn.api.common.util;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.creationreborn.api.common.CRAPIImpl;
@@ -26,8 +25,10 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.util.function.Consumer;
 
 public class RestActionImpl<T> implements RestAction<T> {
@@ -75,10 +76,19 @@ public class RestActionImpl<T> implements RestAction<T> {
             return;
         }
         
-        try {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            JsonObject jsonObject = Toolbox.parseJson(jsonElement, JsonObject.class).orElseThrow(() -> new APIException("Failed to parse API response"));
-            throw new APIException(Toolbox.parseJson(jsonObject.get("message"), String.class).orElse("No message provided"));
+        ResponseBody responseBody = response.body();
+        if (responseBody == null) {
+            throw new IllegalStateException("ResponseBody is unavailable");
+        }
+        
+        try (Reader reader = responseBody.charStream()) {
+            JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
+            String message = Toolbox.GSON.fromJson(jsonObject.get("message"), String.class);
+            if (StringUtils.isNotBlank(message)) {
+                throw new APIException(message);
+            }
+            
+            throw new APIException("No message provided");
         } catch (IOException | JsonParseException ex) {
             throw new APIException("Failed to read API response", ex);
         }

@@ -16,10 +16,9 @@
 
 package net.creationreborn.api.common.endpoint;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import net.creationreborn.api.common.CRAPIImpl;
+import net.creationreborn.api.common.util.RestActionImpl;
 import net.creationreborn.api.common.util.Toolbox;
 import net.creationreborn.api.data.PunishmentData;
 import net.creationreborn.api.endpoint.User;
@@ -27,12 +26,11 @@ import net.creationreborn.api.util.RestAction;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 
+import java.io.Reader;
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class UserEndpoint implements User {
     
@@ -47,20 +45,25 @@ public class UserEndpoint implements User {
         }
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrlBuilder.build())
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrlBuilder.build())
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
+        return new RestActionImpl<>(request, response -> {
             if (response.code() == 204) {
                 return null;
             }
             
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("punishments"), PunishmentData[].class))
-                    .map(values -> Stream.of(values).collect(Collectors.toCollection(LinkedHashSet::new)))
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("punishments"), PunishmentData[].class));
+            }
         });
     }
     
@@ -72,15 +75,21 @@ public class UserEndpoint implements User {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("balance"), Long.class))
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
+                return Toolbox.GSON.fromJson(jsonObject.get("balance"), Long.class);
+            }
         });
     }
     
@@ -92,14 +101,20 @@ public class UserEndpoint implements User {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, PunishmentData.class)
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                return Toolbox.GSON.fromJson(reader, PunishmentData.class);
+            }
         });
     }
     
@@ -115,10 +130,11 @@ public class UserEndpoint implements User {
         formBodyBuilder.add("details", details);
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .post(formBodyBuilder.build()).build();
+                .url(httpUrl)
+                .method("POST", formBodyBuilder.build())
+                .build();
         
-        return Toolbox.newRestAction(request, response -> null);
+        return new RestActionImpl<>(request, response -> null);
     }
 }

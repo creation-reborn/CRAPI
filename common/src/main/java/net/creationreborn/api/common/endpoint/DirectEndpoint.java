@@ -16,21 +16,19 @@
 
 package net.creationreborn.api.common.endpoint;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import net.creationreborn.api.common.CRAPIImpl;
+import net.creationreborn.api.common.util.RestActionImpl;
 import net.creationreborn.api.common.util.Toolbox;
 import net.creationreborn.api.data.ServerData;
 import net.creationreborn.api.endpoint.Direct;
 import net.creationreborn.api.util.RestAction;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 
-import java.util.ArrayList;
+import java.io.Reader;
 import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DirectEndpoint implements Direct {
     
@@ -41,16 +39,21 @@ public class DirectEndpoint implements Direct {
                 .build();
         
         Request request = Toolbox.newRequestBuilder()
-                .url(httpUrl)
                 .addHeader("Authorization", CRAPIImpl.getInstance().getSecret())
-                .get().build();
+                .url(httpUrl)
+                .method("GET", null)
+                .build();
         
-        return Toolbox.newRestAction(request, response -> {
-            JsonElement jsonElement = Toolbox.toJsonElement(Toolbox.getInputStream(response));
-            return Toolbox.parseJson(jsonElement, JsonObject.class)
-                    .flatMap(jsonObject -> Toolbox.parseJson(jsonObject.get("servers"), ServerData[].class))
-                    .map(values -> Stream.of(values).collect(Collectors.toCollection(ArrayList::new)))
-                    .orElseThrow(() -> new JsonParseException("Failed to parse response"));
+        return new RestActionImpl<>(request, response -> {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                throw new IllegalStateException("ResponseBody is unavailable");
+            }
+            
+            try (Reader reader = responseBody.charStream()) {
+                JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("servers"), ServerData[].class));
+            }
         });
     }
 }
