@@ -17,6 +17,8 @@ cache:
 before_install:
   - chmod +x ./gradlew
 
+install: skip
+
 script:
   - ./gradlew clean build --refresh-dependencies
 
