@@ -33,6 +33,15 @@ public class BungeePlugin extends Plugin {
     public void onEnable() {
         instance = this;
         
+        if (getProxy().getName().equalsIgnoreCase("BungeeCord")) {
+            getLogger().severe("\n\n"
+                    + "  BungeeCord is not supported - https://github.com/SpigotMC/BungeeCord/pull/1877\n"
+                    + "\n"
+                    + "  Use Waterfall - https://github.com/PaperMC/Waterfall\n"
+            );
+            return;
+        }
+        
         this.configuration = new Configuration(getDataFolder().toPath());
         
         CRAPIImpl.init();
