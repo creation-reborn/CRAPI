@@ -18,7 +18,6 @@ package net.creationreborn.api.common.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import net.creationreborn.api.CRAPI;
 import okhttp3.CacheControl;
 import okhttp3.HttpUrl;
@@ -26,7 +25,6 @@ import okhttp3.Request;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,14 +47,6 @@ public class Toolbox {
         return new Request.Builder()
                 .cacheControl(CacheControl.FORCE_NETWORK)
                 .addHeader("User-Agent", CRAPI.USER_AGENT);
-    }
-    
-    public static <T> Optional<T> parseJson(JsonElement jsonElement, Class<T> type) {
-        try {
-            return Optional.of(getGson().fromJson(jsonElement, type));
-        } catch (RuntimeException ex) {
-            return Optional.empty();
-        }
     }
     
     public static <T> T newInstance(Class<? extends T> type) {
