@@ -18,7 +18,7 @@ configurations {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
     maven {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/repositories/snapshots"

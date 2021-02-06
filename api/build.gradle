@@ -1,5 +1,4 @@
 plugins {
-    id "com.jfrog.bintray"
     id "java"
     id "java-library"
     id "maven-publish"
@@ -21,7 +20,7 @@ configurations {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -43,29 +42,6 @@ artifacts {
     archives sourcesJar
 }
 
-bintray {
-    user = System.getenv("BINTRAY_USER")
-    key = System.getenv("BINTRAY_KEY")
-    publications = ["mavenPublication"]
-    pkg {
-        repo = "maven"
-        name = "CRAPI"
-        userOrg = "creation-reborn"
-        licenses = ["Apache-2.0"]
-        vcsUrl = "https://github.com/creation-reborn/CRAPI.git"
-        publish = true
-        version {
-            name = project.version
-            released = new Date()
-        }
-    }
-}
-
-bintrayUpload {
-    onlyIf { System.getenv("BINTRAY_KEY") != null }
-    onlyIf { System.getenv("BINTRAY_USER") != null }
-}
-
 javadoc {
     failOnError = false
 }
@@ -84,6 +60,32 @@ publishing {
             version version
             artifact javadocJar
             artifact sourcesJar
+            pom {
+                name = "CRAPI"
+                description = "Creation Reborn API"
+                url = "https://github.com/creation-reborn/CRAPI"
+                developers {
+                    developer {
+                        id = "lxgaming"
+                        name = "LXGaming"
+                    }
+                }
+                issueManagement {
+                    system = "GitHub Issues"
+                    url = "https://github.com/creation-reborn/CRAPI/issues"
+                }
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                scm {
+                    connection = "scm:git@github.com:creation-reborn/CRAPI.git"
+                    developerConnection = "scm:git@github.com:creation-reborn/CRAPI.git"
+                    url = "https://github.com/creation-reborn/CRAPI"
+                }
+            }
         }
     }
 }
