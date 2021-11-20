@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.google.gson.JsonObject;
 import net.creationreborn.api.common.CRAPIImpl;
 import net.creationreborn.api.common.util.RestActionImpl;
 import net.creationreborn.api.common.util.Toolbox;
-import net.creationreborn.api.endpoint.Ticket;
+import net.creationreborn.api.endpoint.TicketEndpoint;
 import net.creationreborn.api.util.RestAction;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -28,7 +28,7 @@ import okhttp3.ResponseBody;
 
 import java.io.Reader;
 
-public class TicketEndpoint implements Ticket {
+public class TicketEndpointImpl implements TicketEndpoint {
     
     @Override
     public RestAction<JsonObject> getOpenTickets() {

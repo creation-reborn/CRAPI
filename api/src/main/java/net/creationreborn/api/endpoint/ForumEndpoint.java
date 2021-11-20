@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,42 +16,42 @@
 
 package net.creationreborn.api.endpoint;
 
-import net.creationreborn.api.data.DonationData;
-import net.creationreborn.api.data.IdentityData;
-import net.creationreborn.api.data.PostData;
+import net.creationreborn.api.model.DonationModel;
+import net.creationreborn.api.model.IdentityModel;
+import net.creationreborn.api.model.PostModel;
 import net.creationreborn.api.util.RestAction;
 
 import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public interface Forum {
+public interface ForumEndpoint {
     
     RestAction<Collection<String>> getAllGroups();
     
-    default RestAction<Collection<DonationData>> getLatestDonations() {
+    default RestAction<Collection<DonationModel>> getLatestDonations() {
         return getLatestDonations(0L, TimeUnit.SECONDS);
     }
     
-    RestAction<Collection<DonationData>> getLatestDonations(long timestamp, TimeUnit unit);
+    RestAction<Collection<DonationModel>> getLatestDonations(long timestamp, TimeUnit unit);
     
     RestAction<Collection<String>> getGroups(long userId);
     
-    default RestAction<Collection<PostData>> getLatestPosts() {
+    default RestAction<Collection<PostModel>> getLatestPosts() {
         return getLatestPosts(0L, TimeUnit.SECONDS);
     }
     
-    RestAction<Collection<PostData>> getLatestPosts(long timestamp, TimeUnit unit);
+    RestAction<Collection<PostModel>> getLatestPosts(long timestamp, TimeUnit unit);
     
-    RestAction<PostData> getPost(int postId);
+    RestAction<PostModel> getPost(int postId);
     
-    RestAction<IdentityData> getIdentity(long discordId);
+    RestAction<IdentityModel> getIdentity(long discordId);
     
-    RestAction<IdentityData> getIdentity(UUID minecraftUniqueId);
+    RestAction<IdentityModel> getIdentity(UUID minecraftUniqueId);
     
-    RestAction<IdentityData> getIdentity(String minecraftUsername);
+    RestAction<IdentityModel> getIdentity(String minecraftUsername);
     
-    RestAction<IdentityData> getIdentity(int userId);
+    RestAction<IdentityModel> getIdentity(int userId);
     
     RestAction<Collection<String>> getUsersOfGroup(String group);
     

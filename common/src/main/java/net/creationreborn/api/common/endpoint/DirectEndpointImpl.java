@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import com.google.gson.JsonObject;
 import net.creationreborn.api.common.CRAPIImpl;
 import net.creationreborn.api.common.util.RestActionImpl;
 import net.creationreborn.api.common.util.Toolbox;
-import net.creationreborn.api.data.ServerData;
-import net.creationreborn.api.endpoint.Direct;
+import net.creationreborn.api.endpoint.DirectEndpoint;
+import net.creationreborn.api.model.ServerModel;
 import net.creationreborn.api.util.RestAction;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -30,10 +30,10 @@ import okhttp3.ResponseBody;
 import java.io.Reader;
 import java.util.Collection;
 
-public class DirectEndpoint implements Direct {
+public class DirectEndpointImpl implements DirectEndpoint {
     
     @Override
-    public RestAction<Collection<ServerData>> getServers() {
+    public RestAction<Collection<ServerModel>> getServers() {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
                 .addPathSegments("direct/getservers.php")
                 .build();
@@ -52,7 +52,7 @@ public class DirectEndpoint implements Direct {
             
             try (Reader reader = responseBody.charStream()) {
                 JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
-                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("servers"), ServerData[].class));
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("servers"), ServerModel[].class));
             }
         });
     }

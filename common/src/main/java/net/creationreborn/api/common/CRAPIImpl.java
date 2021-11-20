@@ -17,27 +17,27 @@
 package net.creationreborn.api.common;
 
 import net.creationreborn.api.CRAPI;
-import net.creationreborn.api.common.endpoint.DirectEndpoint;
-import net.creationreborn.api.common.endpoint.ForumEndpoint;
-import net.creationreborn.api.common.endpoint.LauncherEndpoint;
-import net.creationreborn.api.common.endpoint.TicketEndpoint;
-import net.creationreborn.api.common.endpoint.UserEndpoint;
-import net.creationreborn.api.endpoint.Direct;
-import net.creationreborn.api.endpoint.Forum;
-import net.creationreborn.api.endpoint.Launcher;
-import net.creationreborn.api.endpoint.Ticket;
-import net.creationreborn.api.endpoint.User;
+import net.creationreborn.api.common.endpoint.DirectEndpointImpl;
+import net.creationreborn.api.common.endpoint.ForumEndpointImpl;
+import net.creationreborn.api.common.endpoint.LauncherEndpointImpl;
+import net.creationreborn.api.common.endpoint.TicketEndpointImpl;
+import net.creationreborn.api.common.endpoint.UserEndpointImpl;
+import net.creationreborn.api.endpoint.DirectEndpoint;
+import net.creationreborn.api.endpoint.ForumEndpoint;
+import net.creationreborn.api.endpoint.LauncherEndpoint;
+import net.creationreborn.api.endpoint.TicketEndpoint;
+import net.creationreborn.api.endpoint.UserEndpoint;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CRAPIImpl extends CRAPI {
     
-    private static final Direct DIRECT_ENDPOINT = new DirectEndpoint();
-    private static final Forum FORUM_ENDPOINT = new ForumEndpoint();
-    private static final Launcher LAUNCHER_ENDPOINT = new LauncherEndpoint();
-    private static final Ticket TICKET_ENDPOINT = new TicketEndpoint();
-    private static final User USER_ENDPOINT = new UserEndpoint();
+    private static final DirectEndpoint DIRECT_ENDPOINT = new DirectEndpointImpl();
+    private static final ForumEndpoint FORUM_ENDPOINT = new ForumEndpointImpl();
+    private static final LauncherEndpoint LAUNCHER_ENDPOINT = new LauncherEndpointImpl();
+    private static final TicketEndpoint TICKET_ENDPOINT = new TicketEndpointImpl();
+    private static final UserEndpoint USER_ENDPOINT = new UserEndpointImpl();
     private final Logger logger;
     private final OkHttpClient okHttpClient;
     private String secret;
@@ -61,27 +61,27 @@ public class CRAPIImpl extends CRAPI {
     }
     
     @Override
-    public Direct getDirectEndpoint() {
+    public DirectEndpoint getDirectEndpoint() {
         return DIRECT_ENDPOINT;
     }
     
     @Override
-    public Forum getForumEndpoint() {
+    public ForumEndpoint getForumEndpoint() {
         return FORUM_ENDPOINT;
     }
     
     @Override
-    public Launcher getLauncherEndpoint() {
+    public LauncherEndpoint getLauncherEndpoint() {
         return LAUNCHER_ENDPOINT;
     }
     
     @Override
-    public Ticket getTicketEndpoint() {
+    public TicketEndpoint getTicketEndpoint() {
         return TICKET_ENDPOINT;
     }
     
     @Override
-    public User getUserEndpoint() {
+    public UserEndpoint getUserEndpoint() {
         return USER_ENDPOINT;
     }
     

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package net.creationreborn.api.data;
+package net.creationreborn.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.UUID;
 
-public class PunishmentData {
+public class PunishmentModel {
     
     @SerializedName("unique_id")
     private UUID uniqueId;

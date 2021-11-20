@@ -16,11 +16,11 @@
 
 package net.creationreborn.api;
 
-import net.creationreborn.api.endpoint.Direct;
-import net.creationreborn.api.endpoint.Forum;
-import net.creationreborn.api.endpoint.Launcher;
-import net.creationreborn.api.endpoint.Ticket;
-import net.creationreborn.api.endpoint.User;
+import net.creationreborn.api.endpoint.DirectEndpoint;
+import net.creationreborn.api.endpoint.ForumEndpoint;
+import net.creationreborn.api.endpoint.LauncherEndpoint;
+import net.creationreborn.api.endpoint.TicketEndpoint;
+import net.creationreborn.api.endpoint.UserEndpoint;
 
 public abstract class CRAPI {
     
@@ -47,15 +47,15 @@ public abstract class CRAPI {
         return instance;
     }
     
-    public abstract Direct getDirectEndpoint();
+    public abstract DirectEndpoint getDirectEndpoint();
     
-    public abstract Forum getForumEndpoint();
+    public abstract ForumEndpoint getForumEndpoint();
     
-    public abstract Launcher getLauncherEndpoint();
+    public abstract LauncherEndpoint getLauncherEndpoint();
     
-    public abstract Ticket getTicketEndpoint();
+    public abstract TicketEndpoint getTicketEndpoint();
     
-    public abstract User getUserEndpoint();
+    public abstract UserEndpoint getUserEndpoint();
     
     public static boolean isAvailable() {
         return instance != null;

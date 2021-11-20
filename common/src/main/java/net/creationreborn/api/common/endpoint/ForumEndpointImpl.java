@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@ import com.google.gson.JsonObject;
 import net.creationreborn.api.common.CRAPIImpl;
 import net.creationreborn.api.common.util.RestActionImpl;
 import net.creationreborn.api.common.util.Toolbox;
-import net.creationreborn.api.data.DonationData;
-import net.creationreborn.api.data.IdentityData;
-import net.creationreborn.api.data.PostData;
-import net.creationreborn.api.endpoint.Forum;
+import net.creationreborn.api.endpoint.ForumEndpoint;
+import net.creationreborn.api.model.DonationModel;
+import net.creationreborn.api.model.IdentityModel;
+import net.creationreborn.api.model.PostModel;
 import net.creationreborn.api.util.RestAction;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -35,7 +35,7 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class ForumEndpoint implements Forum {
+public class ForumEndpointImpl implements ForumEndpoint {
     
     @Override
     public RestAction<Collection<String>> getAllGroups() {
@@ -67,7 +67,7 @@ public class ForumEndpoint implements Forum {
     }
     
     @Override
-    public RestAction<Collection<DonationData>> getLatestDonations(long timestamp, TimeUnit unit) {
+    public RestAction<Collection<DonationModel>> getLatestDonations(long timestamp, TimeUnit unit) {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
                 .addPathSegments("forum/getlatestdonations.php")
                 .addQueryParameter("timestamp", String.valueOf(unit.toSeconds(timestamp)))
@@ -87,7 +87,7 @@ public class ForumEndpoint implements Forum {
             
             try (Reader reader = responseBody.charStream()) {
                 JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
-                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("donations"), DonationData[].class));
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("donations"), DonationModel[].class));
             }
         });
     }
@@ -123,7 +123,7 @@ public class ForumEndpoint implements Forum {
     }
     
     @Override
-    public RestAction<Collection<PostData>> getLatestPosts(long timestamp, TimeUnit unit) {
+    public RestAction<Collection<PostModel>> getLatestPosts(long timestamp, TimeUnit unit) {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
                 .addPathSegments("forum/getlatestposts.php")
                 .addQueryParameter("timestamp", String.valueOf(unit.toSeconds(timestamp)))
@@ -143,13 +143,13 @@ public class ForumEndpoint implements Forum {
             
             try (Reader reader = responseBody.charStream()) {
                 JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
-                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("posts"), PostData[].class));
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("posts"), PostModel[].class));
             }
         });
     }
     
     @Override
-    public RestAction<PostData> getPost(int postId) {
+    public RestAction<PostModel> getPost(int postId) {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
                 .addPathSegments("forum/getpost.php")
                 .addQueryParameter("post_id", String.valueOf(postId))
@@ -168,13 +168,13 @@ public class ForumEndpoint implements Forum {
             }
             
             try (Reader reader = responseBody.charStream()) {
-                return Toolbox.GSON.fromJson(reader, PostData.class);
+                return Toolbox.GSON.fromJson(reader, PostModel.class);
             }
         });
     }
     
     @Override
-    public RestAction<IdentityData> getIdentity(long discordId) {
+    public RestAction<IdentityModel> getIdentity(long discordId) {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
                 .addPathSegments("forum/getidentity.php")
                 .addQueryParameter("discord_id", String.valueOf(discordId))
@@ -193,13 +193,13 @@ public class ForumEndpoint implements Forum {
             }
             
             try (Reader reader = responseBody.charStream()) {
-                return Toolbox.GSON.fromJson(reader, IdentityData.class);
+                return Toolbox.GSON.fromJson(reader, IdentityModel.class);
             }
         });
     }
     
     @Override
-    public RestAction<IdentityData> getIdentity(UUID minecraftUniqueId) {
+    public RestAction<IdentityModel> getIdentity(UUID minecraftUniqueId) {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
                 .addPathSegments("forum/getidentity.php")
                 .addQueryParameter("minecraft_unique_id", minecraftUniqueId.toString())
@@ -218,13 +218,13 @@ public class ForumEndpoint implements Forum {
             }
             
             try (Reader reader = responseBody.charStream()) {
-                return Toolbox.GSON.fromJson(reader, IdentityData.class);
+                return Toolbox.GSON.fromJson(reader, IdentityModel.class);
             }
         });
     }
     
     @Override
-    public RestAction<IdentityData> getIdentity(String minecraftUsername) {
+    public RestAction<IdentityModel> getIdentity(String minecraftUsername) {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
                 .addPathSegments("forum/getidentity.php")
                 .addQueryParameter("minecraft_username", minecraftUsername)
@@ -243,13 +243,13 @@ public class ForumEndpoint implements Forum {
             }
             
             try (Reader reader = responseBody.charStream()) {
-                return Toolbox.GSON.fromJson(reader, IdentityData.class);
+                return Toolbox.GSON.fromJson(reader, IdentityModel.class);
             }
         });
     }
     
     @Override
-    public RestAction<IdentityData> getIdentity(int userId) {
+    public RestAction<IdentityModel> getIdentity(int userId) {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
                 .addPathSegments("forum/getidentity.php")
                 .addQueryParameter("user_id", String.valueOf(userId))
@@ -268,7 +268,7 @@ public class ForumEndpoint implements Forum {
             }
             
             try (Reader reader = responseBody.charStream()) {
-                return Toolbox.GSON.fromJson(reader, IdentityData.class);
+                return Toolbox.GSON.fromJson(reader, IdentityModel.class);
             }
         });
     }

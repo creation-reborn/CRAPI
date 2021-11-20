@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package net.creationreborn.api.data;
+package net.creationreborn.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-public class PostData implements Comparable<PostData> {
+public class PostModel implements Comparable<PostModel> {
     
     @SerializedName("post_id")
     private int postId;
@@ -86,7 +86,7 @@ public class PostData implements Comparable<PostData> {
     }
     
     @Override
-    public int compareTo(PostData o) {
+    public int compareTo(PostModel o) {
         return Objects.compare(getPostId(), o.getPostId(), Integer::compareTo);
     }
     
@@ -100,7 +100,7 @@ public class PostData implements Comparable<PostData> {
             return false;
         }
         
-        PostData post = (PostData) obj;
+        PostModel post = (PostModel) obj;
         return Objects.equals(getPostId(), post.getPostId());
     }
     

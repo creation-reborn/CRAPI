@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,39 +14,44 @@
  * limitations under the License.
  */
 
-package net.creationreborn.api.data;
+package net.creationreborn.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Collection;
-
-public class ServerData {
+public class DonationModel {
     
-    @SerializedName("name")
-    private String name;
+    @SerializedName("item")
+    private String item;
     
-    @SerializedName("direct_connects")
-    private Collection<String> directConnects;
+    @SerializedName("id")
+    private int id;
     
-    @SerializedName("lobby")
-    private boolean lobby;
+    @SerializedName("username")
+    private String username;
     
-    @SerializedName("restricted")
-    private boolean restricted;
+    @SerializedName("amount")
+    private float amount;
     
-    public String getName() {
-        return name;
+    @SerializedName("timestamp")
+    private long timestamp;
+    
+    public String getItem() {
+        return item;
     }
     
-    public Collection<String> getDirectConnects() {
-        return directConnects;
+    public int getId() {
+        return id;
     }
     
-    public boolean isLobby() {
-        return lobby;
+    public String getUsername() {
+        return username;
     }
     
-    public boolean isRestricted() {
-        return restricted;
+    public float getAmount() {
+        return amount;
+    }
+    
+    public long getTimestamp() {
+        return timestamp;
     }
 }

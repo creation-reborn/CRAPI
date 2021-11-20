@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-package net.creationreborn.api.data;
+package net.creationreborn.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.UUID;
+import java.util.Collection;
 
-public class IdentityData {
+public class ServerModel {
     
-    @SerializedName("discord_id")
-    private long discordId;
+    @SerializedName("name")
+    private String name;
     
-    @SerializedName("minecraft_unique_id")
-    private UUID minecraftUniqueId;
+    @SerializedName("direct_connects")
+    private Collection<String> directConnects;
     
-    @SerializedName("minecraft_username")
-    private String minecraftUsername;
+    @SerializedName("lobby")
+    private boolean lobby;
     
-    @SerializedName("user_id")
-    private int userId;
+    @SerializedName("restricted")
+    private boolean restricted;
     
-    public long getDiscordId() {
-        return discordId;
+    public String getName() {
+        return name;
     }
     
-    public UUID getMinecraftUniqueId() {
-        return minecraftUniqueId;
+    public Collection<String> getDirectConnects() {
+        return directConnects;
     }
     
-    public String getMinecraftUsername() {
-        return minecraftUsername;
+    public boolean isLobby() {
+        return lobby;
     }
     
-    public int getUserId() {
-        return userId;
+    public boolean isRestricted() {
+        return restricted;
     }
 }

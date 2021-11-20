@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 package net.creationreborn.api.endpoint;
 
-import net.creationreborn.api.data.ServerData;
+import com.google.gson.JsonObject;
 import net.creationreborn.api.util.RestAction;
 
-import java.util.Collection;
-
-public interface Direct {
+public interface TicketEndpoint {
     
-    RestAction<Collection<ServerData>> getServers();
+    RestAction<JsonObject> getOpenTickets();
+    
+    RestAction<JsonObject> getTicket(int ticketId);
 }

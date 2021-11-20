@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,44 +14,39 @@
  * limitations under the License.
  */
 
-package net.creationreborn.api.data;
+package net.creationreborn.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DonationData {
+import java.util.UUID;
+
+public class IdentityModel {
     
-    @SerializedName("item")
-    private String item;
+    @SerializedName("discord_id")
+    private long discordId;
     
-    @SerializedName("id")
-    private int id;
+    @SerializedName("minecraft_unique_id")
+    private UUID minecraftUniqueId;
     
-    @SerializedName("username")
-    private String username;
+    @SerializedName("minecraft_username")
+    private String minecraftUsername;
     
-    @SerializedName("amount")
-    private float amount;
+    @SerializedName("user_id")
+    private int userId;
     
-    @SerializedName("timestamp")
-    private long timestamp;
-    
-    public String getItem() {
-        return item;
+    public long getDiscordId() {
+        return discordId;
     }
     
-    public int getId() {
-        return id;
+    public UUID getMinecraftUniqueId() {
+        return minecraftUniqueId;
     }
     
-    public String getUsername() {
-        return username;
+    public String getMinecraftUsername() {
+        return minecraftUsername;
     }
     
-    public float getAmount() {
-        return amount;
-    }
-    
-    public long getTimestamp() {
-        return timestamp;
+    public int getUserId() {
+        return userId;
     }
 }

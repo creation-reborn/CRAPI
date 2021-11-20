@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@
 
 package net.creationreborn.api.endpoint;
 
-import com.google.gson.JsonObject;
+import net.creationreborn.api.model.ServerModel;
 import net.creationreborn.api.util.RestAction;
 
-public interface Launcher {
+import java.util.Collection;
+
+public interface DirectEndpoint {
     
-    RestAction<JsonObject> getPackages();
+    RestAction<Collection<ServerModel>> getServers();
 }

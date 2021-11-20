@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,10 @@
 
 package net.creationreborn.api.endpoint;
 
-import net.creationreborn.api.data.PunishmentData;
+import com.google.gson.JsonObject;
 import net.creationreborn.api.util.RestAction;
 
-import java.util.Collection;
-import java.util.UUID;
-
-public interface User {
+public interface LauncherEndpoint {
     
-    default RestAction<Collection<PunishmentData>> getAddressPunishments(String address) {
-        return getAddressPunishments(address, null);
-    }
-    
-    RestAction<Collection<PunishmentData>> getAddressPunishments(String address, UUID uniqueId);
-    
-    RestAction<Long> getBalance(UUID uniqueId);
-    
-    RestAction<PunishmentData> getUserPunishments(UUID uniqueId);
-    
-    RestAction<Void> updateBalance(UUID uniqueId, long balance, String details);
+    RestAction<JsonObject> getPackages();
 }

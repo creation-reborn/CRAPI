@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import com.google.gson.JsonObject;
 import net.creationreborn.api.common.CRAPIImpl;
 import net.creationreborn.api.common.util.RestActionImpl;
 import net.creationreborn.api.common.util.Toolbox;
-import net.creationreborn.api.data.PunishmentData;
-import net.creationreborn.api.endpoint.User;
+import net.creationreborn.api.endpoint.UserEndpoint;
+import net.creationreborn.api.model.PunishmentModel;
 import net.creationreborn.api.util.RestAction;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
@@ -32,10 +32,10 @@ import java.io.Reader;
 import java.util.Collection;
 import java.util.UUID;
 
-public class UserEndpoint implements User {
+public class UserEndpointImpl implements UserEndpoint {
     
     @Override
-    public RestAction<Collection<PunishmentData>> getAddressPunishments(String address, UUID uniqueId) {
+    public RestAction<Collection<PunishmentModel>> getAddressPunishments(String address, UUID uniqueId) {
         HttpUrl.Builder httpUrlBuilder = Toolbox.newHttpUrlBuilder()
                 .addPathSegments("user/getaddresspunishments.php")
                 .addQueryParameter("address", address);
@@ -62,7 +62,7 @@ public class UserEndpoint implements User {
             
             try (Reader reader = responseBody.charStream()) {
                 JsonObject jsonObject = Toolbox.GSON.fromJson(reader, JsonObject.class);
-                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("punishments"), PunishmentData[].class));
+                return Toolbox.newArrayList(Toolbox.GSON.fromJson(jsonObject.get("punishments"), PunishmentModel[].class));
             }
         });
     }
@@ -94,7 +94,7 @@ public class UserEndpoint implements User {
     }
     
     @Override
-    public RestAction<PunishmentData> getUserPunishments(UUID uniqueId) {
+    public RestAction<PunishmentModel> getUserPunishments(UUID uniqueId) {
         HttpUrl httpUrl = Toolbox.newHttpUrlBuilder()
                 .addPathSegments("user/getuserpunishments.php")
                 .addQueryParameter("unique_id", uniqueId.toString())
@@ -113,7 +113,7 @@ public class UserEndpoint implements User {
             }
             
             try (Reader reader = responseBody.charStream()) {
-                return Toolbox.GSON.fromJson(reader, PunishmentData.class);
+                return Toolbox.GSON.fromJson(reader, PunishmentModel.class);
             }
         });
     }

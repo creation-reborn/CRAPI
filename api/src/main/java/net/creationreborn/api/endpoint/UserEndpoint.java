@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 creationreborn.net
+ * Copyright 2021 creationreborn.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,23 @@
 
 package net.creationreborn.api.endpoint;
 
-import com.google.gson.JsonObject;
+import net.creationreborn.api.model.PunishmentModel;
 import net.creationreborn.api.util.RestAction;
 
-public interface Ticket {
+import java.util.Collection;
+import java.util.UUID;
+
+public interface UserEndpoint {
     
-    RestAction<JsonObject> getOpenTickets();
+    default RestAction<Collection<PunishmentModel>> getAddressPunishments(String address) {
+        return getAddressPunishments(address, null);
+    }
     
-    RestAction<JsonObject> getTicket(int ticketId);
+    RestAction<Collection<PunishmentModel>> getAddressPunishments(String address, UUID uniqueId);
+    
+    RestAction<Long> getBalance(UUID uniqueId);
+    
+    RestAction<PunishmentModel> getUserPunishments(UUID uniqueId);
+    
+    RestAction<Void> updateBalance(UUID uniqueId, long balance, String details);
 }
