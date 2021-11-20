@@ -15,8 +15,8 @@ repositories {
 
 dependencies {
     api(project(path: ":crapi-api"))
-    api("com.squareup.okhttp3:okhttp:4.8.0")
-    api("org.slf4j:slf4j-api:1.7.30")
+    api("com.squareup.okhttp3:okhttp:4.9.2")
+    api("org.slf4j:slf4j-api:1.7.32")
 }
 
 compileJava {
