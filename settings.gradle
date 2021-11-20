@@ -3,3 +3,11 @@ rootProject.name = "CRAPI"
 include "api"
 include "common"
 include "plugin"
+
+[
+    "api",
+    "common",
+    "plugin"
+].each {
+    findProject(":$it")?.name = "crapi-$it"
+}

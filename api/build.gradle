@@ -1,16 +1,12 @@
 plugins {
-    id "java"
     id "java-library"
-    id "maven-publish"
     id "net.kyori.blossom"
 }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-group = "net.creationreborn"
 archivesBaseName = "crapi"
-version = version
 
 blossom {
     replaceToken("@version@", version)
@@ -20,30 +16,10 @@ configurations {
 }
 
 repositories {
-    mavenCentral()
 }
 
 dependencies {
     api("com.google.code.gson:gson:2.8.6")
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier.set("javadoc")
-    from javadoc.destinationDir
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier.set("sources")
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-javadoc {
-    failOnError = false
 }
 
 processResources {
@@ -52,38 +28,14 @@ processResources {
 }
 
 publishing {
-    publications {
-        mavenPublication(MavenPublication) {
-            from components.java
-            groupId group
-            artifactId archivesBaseName
-            version version
-            artifact javadocJar
-            artifact sourcesJar
-            pom {
-                name = "CRAPI"
-                description = "Creation Reborn API"
-                url = "https://github.com/creation-reborn/CRAPI"
-                developers {
-                    developer {
-                        id = "lxgaming"
-                        name = "LXGaming"
-                    }
-                }
-                issueManagement {
-                    system = "GitHub Issues"
-                    url = "https://github.com/creation-reborn/CRAPI/issues"
-                }
-                licenses {
-                    license {
-                        name = "The Apache License, Version 2.0"
-                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                    }
-                }
-                scm {
-                    connection = "scm:git@github.com:creation-reborn/CRAPI.git"
-                    developerConnection = "scm:git@github.com:creation-reborn/CRAPI.git"
-                    url = "https://github.com/creation-reborn/CRAPI"
+    repositories {
+        if (project.hasProperty("sonatype.username") && project.hasProperty("sonatype.password")) {
+            maven {
+                name = "sonatype"
+                url = version.contains("-SNAPSHOT") ? "https://oss.sonatype.org/content/repositories/snapshots" : "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                credentials {
+                    username project.property("sonatype.username")
+                    password project.property("sonatype.password")
                 }
             }
         }
